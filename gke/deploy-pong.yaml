@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pong-unsec
+  labels:
+    app: pong-unsec
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pong-unsec
+  template:
+    metadata:
+      labels:
+        app: pong-unsec
+    spec:
+      containers:
+        - name: pong-unsec
+          image: gcr.io/gdglyon-cloudrun/latency
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "1000m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pong-sec
+  labels:
+    app: pong-sec
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pong-sec
+  template:
+    metadata:
+      labels:
+        app: pong-sec
+    spec:
+      containers:
+        - name: pong-sec
+          image: gcr.io/gdglyon-cloudrun/latency
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "1000m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pong-sec-service
+spec:
+  selector:
+    app: pong-sec
+  ports:
+    - port: 80
+      targetPort: 8080
+      appProtocol: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pong-unsec-service
+spec:
+  selector:
+    app: pong-unsec
+  ports:
+    - port: 80
+      targetPort: 8080
+      appProtocol: http

@@ -1,0 +1,43 @@
+apiVersion: "security.istio.io/v1beta1"
+kind: "PeerAuthentication"
+metadata:
+  name: "pong-sec"
+  namespace: "default"
+spec:
+  selector:
+    matchLabels:
+      app: pong-sec
+  mtls:
+    mode: STRICT
+---
+apiVersion: "security.istio.io/v1beta1"
+kind: "PeerAuthentication"
+metadata:
+  name: "pong-unsec"
+  namespace: "default"
+spec:
+  selector:
+    matchLabels:
+      app: pong-unsec
+  mtls:
+    mode: STRICT
+---
+apiVersion: "networking.istio.io/v1alpha3"
+kind: "DestinationRule"
+metadata:
+  name: "pong-sec-dest-rule"
+spec:
+  host: "pong-sec-service.default.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: "networking.istio.io/v1alpha3"
+kind: "DestinationRule"
+metadata:
+  name: "pong-unsec-dest-rule"
+spec:
+  host: "pong-unsec-service.default.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL

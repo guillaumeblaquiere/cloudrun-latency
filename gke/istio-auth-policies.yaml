@@ -1,0 +1,27 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: ping-to-pong-sec
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: pong-sec
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/ping-sa"]
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: ping-to-pong-unsec
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: pong-unsec
+  action: ALLOW
+  rules:
+    - {}
