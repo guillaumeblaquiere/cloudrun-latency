@@ -18,6 +18,8 @@ There is only 1 container with 2 endpoints
 
 Build the container and deploy it on the target environment (see the article for more details)
 
+The list of command is availble in the [command.txt](https://github.com/guillaumeblaquiere/cloudrun-latency/tree/master/command.txt) file
+
 # Licence
 
 This library is licensed under Apache 2.0. Full license text is available in
